@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 33
@@ -40,4 +42,8 @@ dependencies {
     implementation 'com.google.guava:guava:31.1-android'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
+    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
+    kapt "androidx.lifecycle:lifecycle-common-java8:2.1.0"
+    implementation "androidx.room:room-runtime:2.2.3"
+    kapt "androidx.room:room-compiler:2.2.3"
 }
