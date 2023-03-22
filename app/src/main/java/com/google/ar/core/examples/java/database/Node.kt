@@ -19,7 +19,7 @@ data class Node(
 
 class Converters {
         @TypeConverter
-        fun fromNodeList(value: List<Node>): String {
+        fun fromNodeList(value: List<Node>?): String {
                 return Gson().toJson(value)
         }
 
