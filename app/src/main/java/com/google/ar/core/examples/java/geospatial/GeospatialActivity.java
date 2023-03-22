@@ -15,8 +15,6 @@
  */
 
 package com.google.ar.core.examples.java.geospatial;
-import kotlin.collections.MutableSet;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -1004,7 +1002,7 @@ public class GeospatialActivity extends AppCompatActivity
   }
   //////////////////// saving node params in the database
   private void saveNodeparams(
-          Integer id, Float latitude, Float longitude, Float altitude, String name, @Nullable MutableSet<Node> adjs) {
+          Integer id, Float latitude, Float longitude, Float altitude, String name, @Nullable HashSet<Node> adjs) {
 
     // create a new Node object with the anchor parameters
     Node node = new Node(id, latitude, longitude, altitude, name, adjs);

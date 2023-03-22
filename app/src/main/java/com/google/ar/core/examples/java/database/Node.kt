@@ -24,8 +24,8 @@ class Converters {
         }
 
         @TypeConverter
-        fun toNodeList(value: String): List<Node> {
-                val type = object : TypeToken<List<Node>>() {}.type
+        fun toNodeList(value: String):MutableSet<Node>? {
+                val type = object : TypeToken<MutableSet<Node>?>() {}.type
                 return Gson().fromJson(value, type)
         }
 }
