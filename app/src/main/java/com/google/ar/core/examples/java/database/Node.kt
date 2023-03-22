@@ -11,5 +11,5 @@ data class Node(
         @ColumnInfo(name = "y") val y: Float,
         @ColumnInfo(name = "z") val z: Float,
         @ColumnInfo(name = "name") val name: String?,
-        @ColumnInfo(name = "adj") val adj: List<Node>?
+        // @ColumnInfo(name = "adj") val adj: List<Node>?
 )

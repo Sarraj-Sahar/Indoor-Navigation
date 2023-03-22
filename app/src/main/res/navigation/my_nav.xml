@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/nodeSave">
+
+    <fragment
+        android:id="@+id/nodeSave"
+        android:name="com.google.ar.core.examples.java.geospatial.NodeSave"
+        android:label="fragment_node_save"
+        tools:layout="@layout/fragment_node_save" >
+        <action
+            android:id="@+id/action_nodeSave_to_saveWalkable"
+            app:destination="@id/saveWalkable" />
+        <action
+            android:id="@+id/action_nodeSave_to_saveDestination"
+            app:destination="@id/saveDestination" />
+    </fragment>
+    <fragment
+        android:id="@+id/saveWalkable"
+        android:name="com.google.ar.core.examples.java.geospatial.SaveWalkable"
+        android:label="fragment_save_walkable"
+        tools:layout="@layout/fragment_save_walkable" >
+        <action
+            android:id="@+id/action_saveWalkable_to_nodeSave"
+            app:destination="@id/nodeSave" />
+        <action
+            android:id="@+id/action_saveWalkable_to_nodeCreated"
+            app:destination="@id/nodeCreated" />
+    </fragment>
+    <fragment
+        android:id="@+id/saveDestination"
+        android:name="com.google.ar.core.examples.java.geospatial.SaveDestination"
+        android:label="fragment_save_destination"
+        tools:layout="@layout/fragment_save_destination" >
+        <action
+            android:id="@+id/action_saveDestination_to_nodeSave"
+            app:destination="@id/nodeSave" />
+        <action
+            android:id="@+id/action_saveDestination_to_nodeCreated"
+            app:destination="@id/nodeCreated" />
+    </fragment>
+    <fragment
+        android:id="@+id/nodeCreated"
+        android:name="com.google.ar.core.examples.java.geospatial.NodeCreated"
+        android:label="fragment_node_created"
+        tools:layout="@layout/fragment_node_created" />
+</navigation>
