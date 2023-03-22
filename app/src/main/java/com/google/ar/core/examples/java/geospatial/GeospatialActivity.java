@@ -39,6 +39,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.room.Room;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -76,6 +77,9 @@ import com.google.ar.core.examples.java.common.samplerender.Texture;
 import com.google.ar.core.examples.java.common.samplerender.VertexBuffer;
 import com.google.ar.core.examples.java.common.samplerender.arcore.BackgroundRenderer;
 import com.google.ar.core.examples.java.common.samplerender.arcore.PlaneRenderer;
+import com.google.ar.core.examples.java.database.Node;
+import com.google.ar.core.examples.java.database.NodeDao;
+import com.google.ar.core.examples.java.database.NodeDatabase;
 import com.google.ar.core.exceptions.CameraNotAvailableException;
 import com.google.ar.core.exceptions.FineLocationPermissionNotGrantedException;
 import com.google.ar.core.exceptions.GooglePlayServicesLocationLibraryNotLinkedException;
@@ -97,6 +101,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nullable;
 
 /**
  * Main activity for the Geospatial API example.
@@ -899,6 +905,7 @@ public class GeospatialActivity extends AppCompatActivity
       storeAnchorParameters(latitude, longitude, 0, quaternion);
     } else {
       createAnchor(earth, latitude, longitude, altitude, quaternion);
+      saveNodeparams(0,(float)latitude, (float)longitude, (float)altitude, "name",null);
       storeAnchorParameters(latitude, longitude, altitude, quaternion);
       String message =
               getResources()
@@ -994,7 +1001,22 @@ public class GeospatialActivity extends AppCompatActivity
       pendingTerrainAnchors.put(anchor, new TerrainAnchorResolveListener());
     }
   }
+  //////////////////// saving node params in the database
+  private void saveNodeparams(
+          Integer id, Float latitude, Float longitude, Float altitude, String name, @Nullable List<Node> adjs) {
 
+    // create a new Node object with the anchor parameters
+    Node node = new Node(id, latitude, longitude, altitude, name, adjs
+    );
+
+    // instantiate the database and insert the new Node object into the database
+    NodeDao nodeDao = Room.databaseBuilder(getApplicationContext(), NodeDatabase.class, "node-database").build().nodeDao();
+    nodeDao.insert(node);
+
+
+  };
+
+  /////////////////////////
   /**
    * Helper function to store the parameters used in anchor creation in {@link SharedPreferences}.
    */
