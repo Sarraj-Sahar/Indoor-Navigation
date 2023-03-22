@@ -13,8 +13,8 @@ data class Node(
         @ColumnInfo(name = "x") val x: Float,
         @ColumnInfo(name = "y") val y: Float,
         @ColumnInfo(name = "z") val z: Float,
-        @ColumnInfo(name = "name") val name: String?,
-        @ColumnInfo(name = "adj") val adj: List<Node>?
+        @ColumnInfo(name = "name") val name: String?, //A null value in this field means it's a "walkable" node.
+        @ColumnInfo(name = "adj") val adj: MutableSet<Node>?
 )
 
 class Converters {
