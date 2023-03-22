@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
     compileSdkVersion 33
@@ -31,6 +32,7 @@ dependencies {
     implementation 'com.google.ar:core:1.35.0'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
 
     // Obj - a simple Wavefront OBJ file loader
     // https://github.com/javagl/Obj
@@ -43,6 +45,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
+    implementation 'androidx.core:core-ktx:+'
     kapt "androidx.lifecycle:lifecycle-common-java8:2.1.0"
     implementation "androidx.room:room-runtime:2.2.3"
     kapt "androidx.room:room-compiler:2.2.3"
