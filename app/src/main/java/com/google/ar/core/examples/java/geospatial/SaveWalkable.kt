@@ -1,84 +1,66 @@
-package com.google.ar.core.examples.java.geospatial;
+package com.google.ar.core.examples.java.geospatial
 
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation.findNavController
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link SaveWalkable#newInstance} factory method to
+ * A simple [Fragment] subclass.
+ * Use the [SaveWalkable.newInstance] factory method to
  * create an instance of this fragment.
  */
-public class SaveWalkable extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
+class SaveWalkable : Fragment() {
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private Button cancel;
-    private Button save;
-
-    public SaveWalkable() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SaveWalkable.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SaveWalkable newInstance(String param1, String param2) {
-        SaveWalkable fragment = new SaveWalkable();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    private var mParam1: String? = null
+    private var mParam2: String? = null
+    private var cancel: Button? = null
+    private var save: Button? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (arguments != null) {
+            mParam1 = requireArguments().getString(ARG_PARAM1)
+            mParam2 = requireArguments().getString(ARG_PARAM2)
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_save_walkable, container, false);
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_save_walkable, container, false)
+        cancel = view.findViewById(R.id.cancelBtn)
+        cancel!!.setOnClickListener(View.OnClickListener { view -> findNavController(view).navigate(R.id.action_saveWalkable_to_nodeSave) })
+        save = view.findViewById(R.id.saveBtn)
+        save!!.setOnClickListener(View.OnClickListener { view -> findNavController(view).navigate(R.id.action_saveWalkable_to_nodeCreated) })
+        return view
+    }
 
-        cancel = view.findViewById(R.id.cancelBtn);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_saveWalkable_to_nodeSave);
-            }
-        });
+    companion object {
+        // TODO: Rename parameter arguments, choose names that match
+        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+        private const val ARG_PARAM1 = "param1"
+        private const val ARG_PARAM2 = "param2"
 
-        save = view.findViewById(R.id.saveBtn);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_saveWalkable_to_nodeCreated);
-            }
-        });
-        return view;
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment SaveWalkable.
+         */
+        // TODO: Rename and change types and number of parameters
+        fun newInstance(param1: String?, param2: String?): SaveWalkable {
+            val fragment = SaveWalkable()
+            val args = Bundle()
+            args.putString(ARG_PARAM1, param1)
+            args.putString(ARG_PARAM2, param2)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

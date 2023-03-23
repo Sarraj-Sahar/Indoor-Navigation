@@ -1,84 +1,95 @@
-package com.google.ar.core.examples.java.geospatial;
+package com.google.ar.core.examples.java.geospatial
 
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+import android.content.Context
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation.findNavController
+import androidx.room.Room
+import com.google.ar.core.examples.java.database.Node
+import com.google.ar.core.examples.java.database.NodeDatabase
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link SaveDestination#newInstance} factory method to
+ * A simple [Fragment] subclass.
+ * Use the [SaveDestination.newInstance] factory method to
  * create an instance of this fragment.
  */
-public class SaveDestination extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private Button cancel;
-    private Button save;
+class SaveDestination : Fragment() {
+    private var cancel: Button? = null
+    private var save: Button? = null
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public SaveDestination() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SaveDestination.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SaveDestination newInstance(String param1, String param2) {
-        SaveDestination fragment = new SaveDestination();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    private var mParam1: String? = null
+    private var mParam2: String? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (arguments != null) {
+            mParam1 = requireArguments().getString(ARG_PARAM1)
+            mParam2 = requireArguments().getString(ARG_PARAM2)
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_save_destination, container, false);
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_save_destination, container, false)
+        cancel = view.findViewById(R.id.cancelBtn)
+        cancel!!.setOnClickListener(View.OnClickListener { view -> findNavController(view).navigate(R.id.action_saveDestination_to_nodeSave) })
+        save = view.findViewById(R.id.saveBtn)
+        save!!.setOnClickListener(View.OnClickListener { view ->
+            findNavController(view).navigate(R.id.action_saveDestination_to_nodeCreated)
 
-        cancel = view.findViewById(R.id.cancelBtn);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_saveDestination_to_nodeSave);
-            }
-        });
+            //saveNodeparams();
+        })
+        return view
+    }
 
-        save = view.findViewById(R.id.saveBtn);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_saveDestination_to_nodeCreated);
-            }
-        });
-        return view;
+    private fun saveNodeparams(
+        context: Context,
+        id: Int,
+        latitude: Float,
+        longitude: Float,
+        altitude: Float,
+        name: String,
+        adjs: MutableSet<Node>?
+    ) {
+
+        // create a new Node object with the anchor parameters
+        val node = Node(id, latitude, longitude, altitude, name, adjs)
+
+        // instantiate the database and insert the new Node object into the database
+        val nodeDao =
+            Room.databaseBuilder(context, NodeDatabase::class.java, "node-database").build()
+                .nodeDao()
+        nodeDao.insert(node)
+    }
+
+    companion object {
+        // TODO: Rename parameter arguments, choose names that match
+        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+        private const val ARG_PARAM1 = "param1"
+        private const val ARG_PARAM2 = "param2"
+
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment SaveDestination.
+         */
+        // TODO: Rename and change types and number of parameters
+        fun newInstance(param1: String?, param2: String?): SaveDestination {
+            val fragment = SaveDestination()
+            val args = Bundle()
+            args.putString(ARG_PARAM1, param1)
+            args.putString(ARG_PARAM2, param2)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }
